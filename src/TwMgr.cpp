@@ -19,6 +19,7 @@
 #   include "TwDirect3D9.h"
 #   include "TwDirect3D10.h"
 #   include "TwDirect3D11.h"
+#   include "TwDirect3D12.h"
 #   include "resource.h"
 #   ifdef _DEBUG
 #       include <crtdbg.h>
@@ -1784,7 +1785,18 @@ static int TwCreateGraph(ETwGraphAPI _GraphAPI)
             }
         #endif // ANT_WINDOWS
         break;
-    }
+	case TW_DIRECT3D12:
+#ifdef ANT_WINDOWS
+		if (g_TwMgr->m_Device != NULL)
+			g_TwMgr->m_Graph = new CTwGraphDirect3D12;
+		else
+		{
+			g_TwMgr->SetLastError(g_ErrBadDevice);
+			return 0;
+		}
+#endif // ANT_WINDOWS
+		break;
+	}
 
     if( g_TwMgr->m_Graph==NULL )
     {
@@ -2057,6 +2069,18 @@ int ANT_CALL TwWindowExists(int wndID)
         return 1;
 }
 
+int ANT_CALL TwDrawContext(void *context)
+{
+	if (g_TwMgr == NULL || g_TwMgr->m_Graph == NULL)
+	{
+		TwGlobalError(g_ErrNotInit);
+		return 0; // not initialized
+	}
+	g_TwMgr->m_GraphContext = context;
+	int ret = TwDraw();
+	g_TwMgr->m_GraphContext = NULL;
+	return ret;
+}
 //  ---------------------------------------------------------------------------
 
 int ANT_CALL TwDraw()
@@ -6255,6 +6279,7 @@ void CTwMgr::UpdateHelpBar()
 //  ---------------------------------------------------------------------------
 
 #if defined(ANT_WINDOWS)
+#pragma warning(disable : 4302)
 
 #include "res/TwXCursors.h"
 

@@ -198,13 +198,15 @@ typedef enum ETwGraphAPI
     TW_DIRECT3D9        = 2,
     TW_DIRECT3D10       = 3,
     TW_DIRECT3D11       = 4,
-    TW_OPENGL_CORE      = 5
+    TW_OPENGL_CORE      = 5,
+	TW_DIRECT3D12		= 6,
 } TwGraphAPI;
 
 TW_API int      TW_CALL TwInit(TwGraphAPI graphAPI, void *device);
 TW_API int      TW_CALL TwTerminate();
 
 TW_API int      TW_CALL TwDraw();
+TW_API int      TW_CALL TwDrawContext(void *context);
 TW_API int      TW_CALL TwWindowSize(int width, int height);
 
 TW_API int      TW_CALL TwSetCurrentWindow(int windowID); // multi-windows support

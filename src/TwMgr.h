@@ -95,6 +95,7 @@ struct CTwMgr
     void *              m_Device;
     int                 m_WndID;
     class ITwGraph *    m_Graph;
+	void *              m_GraphContext;
     int                 m_WndWidth;
     int                 m_WndHeight;
     const CTexFont *    m_CurrentFont;

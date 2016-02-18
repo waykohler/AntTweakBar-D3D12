@@ -74,6 +74,9 @@
     <ClCompile Include="TwPrecomp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TwDirect3D12.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\AntTweakBar.h">
@@ -140,6 +143,9 @@
       <Filter>Private Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\TwXCursors.h">
+      <Filter>Private Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TwDirect3D12.h">
       <Filter>Private Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -211,6 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="TwDirect3D11.hlsl">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="TwDirect3D12.hlsl">
       <Filter>Source Files</Filter>
     </CustomBuild>
   </ItemGroup>

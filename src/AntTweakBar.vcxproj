@@ -21,30 +21,31 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}</ProjectGuid>
     <RootNamespace>AntTweakBar</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -98,13 +99,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
-      <Command>fxc /T vs_4_0_level_9_1 /E LineRectVS /Fh $(IntDir)TwDirect3D11_LineRectVS.h TwDirect3D11.hlsl
-fxc /T vs_4_0_level_9_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D11_LineRectCstColorVS.h TwDirect3D11.hlsl
-fxc /T ps_4_0_level_9_1 /E LineRectPS /Fh $(IntDir)TwDirect3D11_LineRectPS.h TwDirect3D11.hlsl
-fxc /T vs_4_0_level_9_1 /E TextVS /Fh $(IntDir)TwDirect3D11_TextVS.h TwDirect3D11.hlsl
-fxc /T vs_4_0_level_9_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D11_TextCstColorVS.h TwDirect3D11.hlsl
-fxc /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D11.hlsl
-</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -160,13 +156,8 @@ fxc /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D1
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
-      <Command>fxc /T vs_4_0_level_9_1 /E LineRectVS /Fh $(IntDir)TwDirect3D11_LineRectVS.h TwDirect3D11.hlsl
-fxc/T vs_4_0_level_9_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D11_LineRectCstColorVS.h TwDirect3D11.hlsl
-fxc /T ps_4_0_level_9_1 /E LineRectPS /Fh $(IntDir)TwDirect3D11_LineRectPS.h TwDirect3D11.hlsl
-fxc /T vs_4_0_level_9_1 /E TextVS /Fh $(IntDir)TwDirect3D11_TextVS.h TwDirect3D11.hlsl
-fxc /T vs_4_0_level_9_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D11_TextCstColorVS.h TwDirect3D11.hlsl
-fxc /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D11.hlsl
-</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -195,7 +186,7 @@ fxc /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D1
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat />
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <ResourceCompile>
@@ -207,8 +198,8 @@ fxc /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D1
       <RegisterOutput>false</RegisterOutput>
       <OutputFile>$(OutDir)AntTweakBar64.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)AntTweakBar64.pdb</ProgramDatabaseFile>
       <MapExports>false</MapExports>
       <SetChecksum>true</SetChecksum>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -222,13 +213,8 @@ fxc /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D1
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
-      <Command>fxc /Od /Zi /T vs_4_0_level_9_1 /E LineRectVS /Fh $(IntDir)TwDirect3D11_LineRectVS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T vs_4_0_level_9_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D11_LineRectCstColorVS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T ps_4_0_level_9_1 /E LineRectPS /Fh $(IntDir)TwDirect3D11_LineRectPS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T vs_4_0_level_9_1 /E TextVS /Fh $(IntDir)TwDirect3D11_TextVS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T vs_4_0_level_9_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D11_TextCstColorVS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D11.hlsl
-</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -276,13 +262,8 @@ fxc /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwD
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
-      <Command>fxc /Od /Zi /T vs_4_0_level_9_1 /E LineRectVS /Fh $(IntDir)TwDirect3D11_LineRectVS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T vs_4_0_level_9_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D11_LineRectCstColorVS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T ps_4_0_level_9_1 /E LineRectPS /Fh $(IntDir)TwDirect3D11_LineRectPS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T vs_4_0_level_9_1 /E TextVS /Fh $(IntDir)TwDirect3D11_TextVS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T vs_4_0_level_9_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D11_TextCstColorVS.h TwDirect3D11.hlsl
-fxc /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D11.hlsl
-</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -334,6 +315,7 @@ fxc /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwD
     <ClCompile Include="TwColors.cpp" />
     <ClCompile Include="TwDirect3D10.cpp" />
     <ClCompile Include="TwDirect3D11.cpp" />
+    <ClCompile Include="TwDirect3D12.cpp" />
     <ClCompile Include="TwDirect3D9.cpp" />
     <ClCompile Include="TwEventGLFW.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -428,10 +410,46 @@ fxc /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwD
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="TwDirect3D11.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E LineRectVS /Fh $(IntDir)TwDirect3D11_LineRectVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D11_LineRectCstColorVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T ps_4_0_level_9_1 /E LineRectPS /Fh $(IntDir)TwDirect3D11_LineRectPS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E TextVS /Fh $(IntDir)TwDirect3D11_TextVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D11_TextCstColorVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D11.hlsl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling D3D11 shaders.</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E LineRectVS /Fh $(IntDir)TwDirect3D11_LineRectVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D11_LineRectCstColorVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T ps_4_0_level_9_1 /E LineRectPS /Fh $(IntDir)TwDirect3D11_LineRectPS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E TextVS /Fh $(IntDir)TwDirect3D11_TextVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D11_TextCstColorVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D11.hlsl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling D3D11 shaders.</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E LineRectVS /Fh $(IntDir)TwDirect3D11_LineRectVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D11_LineRectCstColorVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T ps_4_0_level_9_1 /E LineRectPS /Fh $(IntDir)TwDirect3D11_LineRectPS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E TextVS /Fh $(IntDir)TwDirect3D11_TextVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D11_TextCstColorVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D11.hlsl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compiling D3D11 shaders.</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E LineRectVS /Fh $(IntDir)TwDirect3D11_LineRectVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D11_LineRectCstColorVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T ps_4_0_level_9_1 /E LineRectPS /Fh $(IntDir)TwDirect3D11_LineRectPS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E TextVS /Fh $(IntDir)TwDirect3D11_TextVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T vs_4_0_level_9_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D11_TextCstColorVS.h TwDirect3D11.hlsl
+fxc /nologo /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwDirect3D11.hlsl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compiling D3D11 shaders.</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)TwDirect3D11_LineRectVS.h;$(IntDir)TwDirect3D11_LineRectCstColorVS.h;$(IntDir)TwDirect3D11_LineRectPS.h;$(IntDir)TwDirect3D11_TextVS.h;$(IntDir)TwDirect3D11_TextCstColorVS.h;$(IntDir)TwDirect3D11_TextPS.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)TwDirect3D11_LineRectVS.h;$(IntDir)TwDirect3D11_LineRectCstColorVS.h;$(IntDir)TwDirect3D11_LineRectPS.h;$(IntDir)TwDirect3D11_TextVS.h;$(IntDir)TwDirect3D11_TextCstColorVS.h;$(IntDir)TwDirect3D11_TextPS.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)TwDirect3D11_LineRectVS.h;$(IntDir)TwDirect3D11_LineRectCstColorVS.h;$(IntDir)TwDirect3D11_LineRectPS.h;$(IntDir)TwDirect3D11_TextVS.h;$(IntDir)TwDirect3D11_TextCstColorVS.h;$(IntDir)TwDirect3D11_TextPS.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)TwDirect3D11_LineRectVS.h;$(IntDir)TwDirect3D11_LineRectCstColorVS.h;$(IntDir)TwDirect3D11_LineRectPS.h;$(IntDir)TwDirect3D11_TextVS.h;$(IntDir)TwDirect3D11_TextCstColorVS.h;$(IntDir)TwDirect3D11_TextPS.h</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -449,6 +467,7 @@ fxc /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwD
     <ClInclude Include="TwColors.h" />
     <ClInclude Include="TwDirect3D10.h" />
     <ClInclude Include="TwDirect3D11.h" />
+    <ClInclude Include="TwDirect3D12.h" />
     <ClInclude Include="TwDirect3D9.h" />
     <ClInclude Include="TwFonts.h" />
     <ClInclude Include="TwGraph.h" />
@@ -483,6 +502,51 @@ fxc /Od /Zi /T ps_4_0_level_9_1 /E TextPS /Fh $(IntDir)TwDirect3D11_TextPS.h TwD
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\FontChars.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="TwDirect3D12.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">fxc /nologo /Od /Zi /T vs_5_1 /E LineRectVS /Fh $(IntDir)TwDirect3D12_LineRectVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D12_LineRectCstColorVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T ps_5_1 /E LineRectPS /Fh $(IntDir)TwDirect3D12_LineRectPS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E TextVS /Fh $(IntDir)TwDirect3D12_TextVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D12_TextCstColorVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T ps_5_1 /E TextPS /Fh $(IntDir)TwDirect3D12_TextPS.h TwDirect3D12.hlsl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling D3D12 shaders.</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)TwDirect3D12_LineRectVS.h;$(IntDir)TwDirect3D12_LineRectCstColorVS.h;$(IntDir)TwDirect3D12_LineRectPS.h;$(IntDir)TwDirect3D12_TextVS.h;$(IntDir)TwDirect3D12_TextCstColorVS.h;$(IntDir)TwDirect3D12_TextPS.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">fxc /nologo /Od /Zi /T vs_5_1 /E LineRectVS /Fh $(IntDir)TwDirect3D12_LineRectVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D12_LineRectCstColorVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T ps_5_1 /E LineRectPS /Fh $(IntDir)TwDirect3D12_LineRectPS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E TextVS /Fh $(IntDir)TwDirect3D12_TextVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D12_TextCstColorVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T ps_5_1 /E TextPS /Fh $(IntDir)TwDirect3D12_TextPS.h TwDirect3D12.hlsl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling D3D12 shaders.</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)TwDirect3D12_LineRectVS.h;$(IntDir)TwDirect3D12_LineRectCstColorVS.h;$(IntDir)TwDirect3D12_LineRectPS.h;$(IntDir)TwDirect3D12_TextVS.h;$(IntDir)TwDirect3D12_TextCstColorVS.h;$(IntDir)TwDirect3D12_TextPS.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fxc /nologo /Od /Zi /T vs_5_1 /E LineRectVS /Fh $(IntDir)TwDirect3D12_LineRectVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D12_LineRectCstColorVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T ps_5_1 /E LineRectPS /Fh $(IntDir)TwDirect3D12_LineRectPS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E TextVS /Fh $(IntDir)TwDirect3D12_TextVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D12_TextCstColorVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T ps_5_1 /E TextPS /Fh $(IntDir)TwDirect3D12_TextPS.h TwDirect3D12.hlsl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compiling D3D12 shaders.</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)TwDirect3D12_LineRectVS.h;$(IntDir)TwDirect3D12_LineRectCstColorVS.h;$(IntDir)TwDirect3D12_LineRectPS.h;$(IntDir)TwDirect3D12_TextVS.h;$(IntDir)TwDirect3D12_TextCstColorVS.h;$(IntDir)TwDirect3D12_TextPS.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fxc /nologo /Od /Zi /T vs_5_1 /E LineRectVS /Fh $(IntDir)TwDirect3D12_LineRectVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E LineRectCstColorVS /Fh $(IntDir)TwDirect3D12_LineRectCstColorVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T ps_5_1 /E LineRectPS /Fh $(IntDir)TwDirect3D12_LineRectPS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E TextVS /Fh $(IntDir)TwDirect3D12_TextVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T vs_5_1 /E TextCstColorVS /Fh $(IntDir)TwDirect3D12_TextCstColorVS.h TwDirect3D12.hlsl
+fxc /nologo /Od /Zi /T ps_5_1 /E TextPS /Fh $(IntDir)TwDirect3D12_TextPS.h TwDirect3D12.hlsl
+</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compiling D3D12 shaders.</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)TwDirect3D12_LineRectVS.h;$(IntDir)TwDirect3D12_LineRectCstColorVS.h;$(IntDir)TwDirect3D12_LineRectPS.h;$(IntDir)TwDirect3D12_TextVS.h;$(IntDir)TwDirect3D12_TextCstColorVS.h;$(IntDir)TwDirect3D12_TextPS.h</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

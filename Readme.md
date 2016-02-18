@@ -1,6 +1,12 @@
 # Direct3D 12 port of AntTweakBar
 
-Nothing to see here yet, stay tuned.
+Needs Visual studio 2015 and the Direct3D sdk that comes with it.
+
+There are currently no binaries, you need to compile it yourself.
+
+Resources are not released, this is a first commit.
+
+But, it works.
 
 ### Original Readme.txt from AntTweakBar development library follows
 
