@@ -478,7 +478,7 @@ CTwGraphDirect3D12::UploadBuffer CTwGraphDirect3D12::AllocUploadBuffer(uint32_t 
 
 	if (bytes > m_UploadResourceSize)
 	{
-		D3D12_HEAP_PROPERTIES heapProp = { D3D12_HEAP_TYPE_UPLOAD };
+		D3D12_HEAP_PROPERTIES heapProp = m_D3DDev->GetCustomHeapProperties(0,D3D12_HEAP_TYPE_UPLOAD);
 		D3D12_RESOURCE_DESC desc;
 		memset(&desc, 0, sizeof(desc));
 		desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
@@ -505,7 +505,7 @@ CTwGraphDirect3D12::UploadBuffer CTwGraphDirect3D12::AllocUploadBuffer(uint32_t 
 			m_UploadResourceUsed = 0;
 			if(m_UploadResourcesFree.empty())
 			{
-				D3D12_HEAP_PROPERTIES heapProp = { D3D12_HEAP_TYPE_UPLOAD };
+				D3D12_HEAP_PROPERTIES heapProp = m_D3DDev->GetCustomHeapProperties( 0, D3D12_HEAP_TYPE_UPLOAD );
 				D3D12_RESOURCE_DESC desc;
 				memset(&desc, 0, sizeof(desc));
 				desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
@@ -534,7 +534,7 @@ CTwGraphDirect3D12::UploadBuffer CTwGraphDirect3D12::AllocUploadBuffer(uint32_t 
 
 ID3D12Resource * CTwGraphDirect3D12::CreateGPUCopy(UploadBuffer &upload, D3D12_RESOURCE_DESC *inDesc /* = nullptr */)
 {
-	D3D12_HEAP_PROPERTIES heapProp = { D3D12_HEAP_TYPE_DEFAULT };
+	D3D12_HEAP_PROPERTIES heapProp = m_D3DDev->GetCustomHeapProperties(0, D3D12_HEAP_TYPE_DEFAULT);
 	D3D12_RESOURCE_DESC desc;
 	if(inDesc == NULL)
 	{
