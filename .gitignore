@@ -26,3 +26,6 @@ lib/*.dll
 lib/*.exp
 lib/*.so
 lib/*.so.*
+lib/*.iobj
+lib/*.ipdb
+lib/*.pdb
