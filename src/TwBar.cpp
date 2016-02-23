@@ -1071,7 +1071,17 @@ int CTwVar::SetAttrib(int _AttribID, const char *_Value, TwBar *_Bar, struct CTw
 				{
 					if (_Value[i] != 0 && _Value[i] != '/')
 						continue;
-
+					int open = 0;
+					if (*lastSep == '-')
+					{
+						lastSep++;
+						open = -1;
+					}
+					else if (*lastSep == '+')
+					{
+						lastSep++;
+						open = +1;
+					}
 					std::string grpName(lastSep, _Value + i);
 					lastSep = _Value + i + 1;;
 
@@ -1093,6 +1103,12 @@ int CTwVar::SetAttrib(int _AttribID, const char *_Value, TwBar *_Bar, struct CTw
 						Grp->m_ColorPtr = &(_Bar->m_ColGrpText);
 						parentGrp->m_Vars.push_back(Grp);
 					}
+
+					if (open)
+					{
+						Grp->m_Open = open > 0;
+					}
+
 					if (_Value[i] == 0)
 					{
 						break;
