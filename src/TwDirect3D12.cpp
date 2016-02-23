@@ -68,11 +68,26 @@ namespace D3D12Shaders
 
 const RECT FullRect = { 0, 0, 16000, 16000 };
 static bool RectIsFull(const RECT& r) { return r.left == FullRect.left && r.right == FullRect.right && r.top == FullRect.top && r.bottom == FullRect.bottom; }
+#define SAFE_RELEASE(X) do { if(X) { (X)->Release(); X = nullptr; } } while(0)
+#define SET_DX_NAME(X) do { if(X) { (X)->SetName(L"AntTweakBar, " __FUNCTION__ "(), " #X); } } while(0)
 
 int CTwGraphDirect3D12::Init()
 {
 	assert(g_TwMgr != NULL);
 	assert(g_TwMgr->m_Device != NULL);
+
+	m_Line_PSO = NULL;
+	m_Line_AA_PSO = NULL;
+	m_Tri_PSO = NULL;
+	m_Tri_CW_PSO = NULL;
+	m_Tri_CCW_PSO = NULL;
+	m_TriCstColor_PSO = NULL;
+	m_Text_PSO = NULL;
+	m_TextCstColor_PSO = NULL;
+	m_RootSignature = NULL;
+	m_UploadResource = NULL;
+	m_FontResource = NULL;
+	m_srvDescriptorHeap = NULL;
 
 	HRESULT hr;
 
@@ -106,6 +121,7 @@ int CTwGraphDirect3D12::Init()
 		Shut();
 		return 0;
 	}
+	SET_DX_NAME(m_srvDescriptorHeap);
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC desc = { 0 };
 
@@ -153,6 +169,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_Line_AA_PSO);
 
 		desc.RasterizerState.AntialiasedLineEnable = FALSE;
 
@@ -163,6 +180,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_Line_PSO);
 
 		desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
@@ -174,6 +192,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_Tri_PSO);
 
 		desc.VS.pShaderBytecode = D3D12Shaders::g_LineRectCstColorVS;
 		desc.VS.BytecodeLength = sizeof(D3D12Shaders::g_LineRectCstColorVS);
@@ -184,6 +203,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_TriCstColor_PSO);
 
 		desc.VS.pShaderBytecode = D3D12Shaders::g_LineRectVS;
 		desc.VS.BytecodeLength = sizeof(D3D12Shaders::g_LineRectVS);
@@ -196,6 +216,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_Tri_CW_PSO);
 
 		desc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;
 		hr = m_D3DDev->CreateGraphicsPipelineState(&desc, IID_PPV_ARGS(&m_Tri_CCW_PSO));
@@ -205,6 +226,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_Tri_CCW_PSO);
 
 		hr = m_D3DDev->CreateRootSignature(0, D3D12Shaders::g_LineRectPS, sizeof(D3D12Shaders::g_LineRectPS), IID_PPV_ARGS(&m_RootSignature));
 		if (FAILED(hr))
@@ -213,6 +235,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_RootSignature);
 	}
 
 	{
@@ -240,6 +263,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_Text_PSO);
 
 
 		desc.VS.pShaderBytecode = D3D12Shaders::g_TextCstColorVS;
@@ -252,6 +276,7 @@ int CTwGraphDirect3D12::Init()
 			Shut();
 			return 0;
 		}
+		SET_DX_NAME(m_TextCstColor_PSO);
 	}
 
 
@@ -260,6 +285,25 @@ int CTwGraphDirect3D12::Init()
 
 int CTwGraphDirect3D12::Shut()
 {
+	SAFE_RELEASE(m_Line_PSO);
+	SAFE_RELEASE(m_Line_AA_PSO);
+	SAFE_RELEASE(m_Tri_PSO);
+	SAFE_RELEASE(m_Tri_CW_PSO);
+	SAFE_RELEASE(m_Tri_CCW_PSO);
+	SAFE_RELEASE(m_TriCstColor_PSO);
+	SAFE_RELEASE(m_Text_PSO);
+	SAFE_RELEASE(m_TextCstColor_PSO);
+	SAFE_RELEASE(m_RootSignature);
+	SAFE_RELEASE(m_UploadResource);
+	SAFE_RELEASE(m_FontResource);
+	SAFE_RELEASE(m_srvDescriptorHeap);
+
+	for (auto &res : m_ResourcesToFree)	SAFE_RELEASE(res);
+	for (auto &res : m_UploadResourcesFree)	SAFE_RELEASE(res);
+	for (auto &res : m_UploadResourcesFreeThisFrame)	SAFE_RELEASE(res);
+	for (auto &res : deferedCopying) SAFE_RELEASE(res.second);
+	
+	SAFE_RELEASE(m_D3DDev);
 	return 0;
 }
 
@@ -490,6 +534,7 @@ CTwGraphDirect3D12::UploadBuffer CTwGraphDirect3D12::AllocUploadBuffer(uint32_t 
 		desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 		m_D3DDev->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_GENERIC_READ, NULL, IID_PPV_ARGS(&ret.resource));
+		ret.resource->SetName(L"AntTweakBar: UploadBufferResource, to big for the reuse buffer");
 		ret.offset = 0;
 		ret.bytes = bytes;
 		m_ResourcesToFree.push_back(ret.resource);
@@ -517,6 +562,7 @@ CTwGraphDirect3D12::UploadBuffer CTwGraphDirect3D12::AllocUploadBuffer(uint32_t 
 				desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 				m_D3DDev->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_GENERIC_READ, NULL, IID_PPV_ARGS(&m_UploadResource));
+				m_UploadResource->SetName(L"AntTweakBar: Upload buffer, used for vertex buffers, and font textures to be copied if they are small enough, reused from frame to frame.");
 			}
 			else
 			{
@@ -551,6 +597,25 @@ ID3D12Resource * CTwGraphDirect3D12::CreateGPUCopy(UploadBuffer &upload, D3D12_R
 
 	ID3D12Resource * ret;
 	m_D3DDev->CreateCommittedResource(&heapProp, D3D12_HEAP_FLAG_NONE, inDesc, D3D12_RESOURCE_STATE_COPY_DEST, NULL, IID_PPV_ARGS(&ret));
+	switch (inDesc->Dimension)
+	{
+	default:
+	case D3D12_RESOURCE_DIMENSION_UNKNOWN:
+		ret->SetName(L"AntTweakBar: GPU Resource. Type: UNKNOWN");
+		break;
+	case D3D12_RESOURCE_DIMENSION_BUFFER:
+		ret->SetName(L"AntTweakBar: GPU Resource. Type: BUFFER");
+		break;
+	case D3D12_RESOURCE_DIMENSION_TEXTURE1D:
+		ret->SetName(L"AntTweakBar: GPU Resource. Type: TEXTURE1D");
+		break;
+	case D3D12_RESOURCE_DIMENSION_TEXTURE2D:
+		ret->SetName(L"AntTweakBar: GPU Resource. Type: TEXTURE2D");
+		break;
+	case D3D12_RESOURCE_DIMENSION_TEXTURE3D:
+		ret->SetName(L"AntTweakBar: GPU Resource. Type: TEXTURE3D");
+		break;
+	}
 
 	if(m_D3DGraphCmdList)
 	{
@@ -767,8 +832,8 @@ void * CTwGraphDirect3D12::NewTextObj()
 void CTwGraphDirect3D12::DeleteTextObj(void *_TextObj)
 {
 	CTextObj *textObj = (CTextObj *)_TextObj;
-	if(textObj->m_BgVertexBuffer) textObj->m_BgVertexBuffer->Release();
-	if(textObj->m_TextVertexBuffer) textObj->m_TextVertexBuffer->Release();
+	SAFE_RELEASE(textObj->m_BgVertexBuffer);
+	SAFE_RELEASE(textObj->m_TextVertexBuffer);
 	delete textObj;
 }
 
@@ -801,7 +866,7 @@ void CTwGraphDirect3D12::BuildText(void *_TextObj, const std::string *_TextLines
 
 		uint64_t rowBytes=0,totalBytes=0;
 		m_D3DDev->GetCopyableFootprints(&desc, 0, 1, 0, NULL, NULL, &rowBytes, &totalBytes);
-		UploadBuffer texUpload = AllocUploadBuffer(totalBytes,512);
+		UploadBuffer texUpload = AllocUploadBuffer(uint32_t(totalBytes),512);
 
 		uint8_t *dest = (uint8_t *)texUpload.Map();
 		for (int y = 0; y < desc.Height; y++)
@@ -826,6 +891,7 @@ void CTwGraphDirect3D12::BuildText(void *_TextObj, const std::string *_TextLines
 		textureDesc.Texture2D.ResourceMinLODClamp = 0;
 
 		m_D3DDev->CreateShaderResourceView(m_FontResource, &textureDesc, m_srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+		SET_DX_NAME(m_FontResource);
 	}
 
 	if (textObj->m_BgVertexBuffer) { m_ResourcesToFree.push_back(textObj->m_BgVertexBuffer); textObj->m_BgVertexBuffer = NULL; }
@@ -977,12 +1043,14 @@ void CTwGraphDirect3D12::BuildText(void *_TextObj, const std::string *_TextLines
 	{
 		textVertsUpload.Unmap();
 		textObj->m_TextVertexBuffer = CreateGPUCopy(textVertsUpload);
+		SET_DX_NAME(textObj->m_TextVertexBuffer);
 	}
 
 	if (bgVerts)
 	{
 		bgVertsUpload.Unmap();
 		textObj->m_BgVertexBuffer = CreateGPUCopy(bgVertsUpload);
+		SET_DX_NAME(textObj->m_BgVertexBuffer);
 	}
 }
 

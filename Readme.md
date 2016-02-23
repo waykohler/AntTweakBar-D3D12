@@ -23,9 +23,6 @@ If the font is 10 pixels high, the height of the widget would be 80. Max is 16 r
 
 If you find bugs open issues, or better yet, send pull requests with fixes.
 
-Known issue:
- #1 Resources are not released when TwTerminate is called.
-
 ### Original Readme.txt from AntTweakBar development library follows
 
 AntTweakBar is a small and easy-to-use C/C++ library that allows programmers
