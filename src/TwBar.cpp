@@ -1065,24 +1065,40 @@ int CTwVar::SetAttrib(int _AttribID, const char *_Value, TwBar *_Bar, struct CTw
                 Grp = &(_Bar->m_VarRoot);
             else
             {
-                CTwVar *v = _Bar->Find(_Value, NULL, NULL);
-                if( v && !v->IsGroup() )
-                {
-                    g_TwMgr->SetLastError(g_ErrNotGroup);
-                    return 0;
-                }
-                Grp = static_cast<CTwVarGroup *>(v);
-                if( Grp==NULL )
-                {
-                    Grp = new CTwVarGroup;
-                    Grp->m_Name = _Value;
-                    Grp->m_Open = true;
-                    Grp->m_SummaryCallback = NULL;
-                    Grp->m_SummaryClientData = NULL;
-                    Grp->m_StructValuePtr = NULL;
-                    Grp->m_ColorPtr = &(_Bar->m_ColGrpText);
-                    _Bar->m_VarRoot.m_Vars.push_back(Grp);
-                }
+				CTwVarGroup *parentGrp = &_Bar->m_VarRoot;
+				const char *lastSep = _Value;
+				for (size_t i = 0;;i++)
+				{
+					if (_Value[i] != 0 && _Value[i] != '/')
+						continue;
+
+					std::string grpName(lastSep, _Value + i);
+					lastSep = _Value + i + 1;;
+
+					CTwVar *v = _Bar->Find(grpName.c_str(), NULL, NULL);
+					if (v && !v->IsGroup())
+					{
+						g_TwMgr->SetLastError(g_ErrNotGroup);
+						return 0;
+					}
+					Grp = static_cast<CTwVarGroup *>(v);
+					if (Grp == NULL)
+					{
+						Grp = new CTwVarGroup;
+						Grp->m_Name = grpName;
+						Grp->m_Open = true;
+						Grp->m_SummaryCallback = NULL;
+						Grp->m_SummaryClientData = NULL;
+						Grp->m_StructValuePtr = NULL;
+						Grp->m_ColorPtr = &(_Bar->m_ColGrpText);
+						parentGrp->m_Vars.push_back(Grp);
+					}
+					if (_Value[i] == 0)
+					{
+						break;
+					}
+					parentGrp = Grp;
+				}
             }
             Grp->m_Vars.push_back(this);
             if( _VarParent!=NULL && _VarIndex>=0 )
@@ -2391,7 +2407,8 @@ enum EVarGroupAttribs
     VG_AXISX,       // tw_type_quat* only
     VG_AXISY,       // tw_type_quat* only
     VG_AXISZ,       // tw_type_quat* only
-    VG_SHOWVAL      // tw_type_quat* only
+    VG_SHOWVAL,     // tw_type_quat* only
+    VG_ROWS,        // tw_type_quat* only
 };
 
 int CTwVarGroup::HasAttrib(const char *_Attrib, bool *_HasValue) const
@@ -2405,6 +2422,11 @@ int CTwVarGroup::HasAttrib(const char *_Attrib, bool *_HasValue) const
     {
         *_HasValue = true;
         return VG_OPENED;
+    }
+    else if( _stricmp(_Attrib, "rows")==0 )
+    {
+        *_HasValue = true;
+        return VG_ROWS;
     }
     else if( _stricmp(_Attrib, "typeid")==0 )
     {
@@ -2538,6 +2560,24 @@ int CTwVarGroup::SetAttrib(int _AttribID, const char *_Value, TwBar *_Bar, struc
                 }
             }
             return 0;
+        }
+    case VG_ROWS:
+        {
+            if (_Value == NULL)
+            {
+                return 0;
+            }
+            int rows = atoi(_Value);
+            int customCount = 0;
+            for (size_t i = 0; i < m_Vars.size(); i++)
+            {
+                if (m_Vars[i]->IsCustom())
+                {
+                    m_Vars[i]->m_Visible = customCount < rows;
+                    customCount++;
+                }
+            }
+            return 1;
         }
     case VG_VALPTR:
         {
@@ -5121,6 +5161,13 @@ void CTwBar::Draw(int _DrawPart)
                 {
                     int y0 = r.m_YMin - max(r.m_IndexMin - sProxy->m_CustomIndexFirst, 0)*(m_Font->m_CharHeight + m_LineSep);
                     int y1 = y0 + max(sProxy->m_CustomIndexLast - sProxy->m_CustomIndexFirst + 1, 0)*(m_Font->m_CharHeight + m_LineSep) - 2;
+                    for (int i = sProxy->m_CustomIndexFirst; i <= sProxy->m_CustomIndexLast; i++)
+                    {
+                        if (!r.m_Var->m_Vars[i]->m_Visible)
+                        {
+                            y1 -= m_Font->m_CharHeight + m_LineSep;
+                        }
+                    }
                     if( y0<y1 )
                     {
                         r.m_Y0 = y0;

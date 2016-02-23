@@ -367,6 +367,24 @@ void CColorExt::CreateTypes()
 //  Quaternion ext type
 //  ---------------------------------------------------------------------------
 
+enum QuaternionExtIndices
+{
+    QUAT_QX = 16,
+    QUAT_QY,
+    QUAT_QZ,
+    QUAT_QW,
+    QUAT_AX,
+    QUAT_AY,
+    QUAT_AZ,
+    QUAT_ADEG,
+    QUAT_MODE,
+    QUAT_DX,
+    QUAT_DY,
+    QUAT_DZ,
+    QUAT_COUNT,
+};
+
+
 void ANT_CALL CQuaternionExt::InitQuat4FCB(void *_ExtValue, void *_ClientData)
 {
     CQuaternionExt *ext = static_cast<CQuaternionExt *>(_ExtValue);
@@ -516,70 +534,70 @@ void ANT_CALL CQuaternionExt::CopyVarFromExtCB(void *_VarValue, const void *_Ext
     if( _VarValue && ext )
     {
         // Synchronize Quat and AxisAngle
-        if( _ExtMemberIndex>=4 && _ExtMemberIndex<=7 )
+        if( _ExtMemberIndex>=QUAT_QX && _ExtMemberIndex<=QUAT_QZ)
         {
             ext->ConvertToAxisAngle();
             // show/hide quat values
-            if( _ExtMemberIndex==4 && mProxy && mProxy->m_VarParent )
+            if( _ExtMemberIndex==QUAT_QX && mProxy && mProxy->m_VarParent )
             {
-                assert( mProxy->m_VarParent->m_Vars.size()==16 );
+                assert( mProxy->m_VarParent->m_Vars.size()==QUAT_COUNT);
                 bool visible = ext->m_ShowVal;
                 if( ext->m_IsDir )
                 {
-                    if(    mProxy->m_VarParent->m_Vars[13]->m_Visible != visible
-                        || mProxy->m_VarParent->m_Vars[14]->m_Visible != visible
-                        || mProxy->m_VarParent->m_Vars[15]->m_Visible != visible )
+                    if(    mProxy->m_VarParent->m_Vars[QUAT_DX]->m_Visible != visible
+                        || mProxy->m_VarParent->m_Vars[QUAT_DY]->m_Visible != visible
+                        || mProxy->m_VarParent->m_Vars[QUAT_DZ]->m_Visible != visible )
                     {
-                        mProxy->m_VarParent->m_Vars[13]->m_Visible = visible;
-                        mProxy->m_VarParent->m_Vars[14]->m_Visible = visible;
-                        mProxy->m_VarParent->m_Vars[15]->m_Visible = visible;
+                        mProxy->m_VarParent->m_Vars[QUAT_DX]->m_Visible = visible;
+                        mProxy->m_VarParent->m_Vars[QUAT_DY]->m_Visible = visible;
+                        mProxy->m_VarParent->m_Vars[QUAT_DZ]->m_Visible = visible;
                         mProxy->m_Bar->NotUpToDate();
                     }
                 }
                 else
                 {
-                    if(    mProxy->m_VarParent->m_Vars[4]->m_Visible != visible
-                        || mProxy->m_VarParent->m_Vars[5]->m_Visible != visible
-                        || mProxy->m_VarParent->m_Vars[6]->m_Visible != visible
-                        || mProxy->m_VarParent->m_Vars[7]->m_Visible != visible )
+                    if(    mProxy->m_VarParent->m_Vars[QUAT_QX]->m_Visible != visible
+                        || mProxy->m_VarParent->m_Vars[QUAT_QY]->m_Visible != visible
+                        || mProxy->m_VarParent->m_Vars[QUAT_QZ]->m_Visible != visible
+                        || mProxy->m_VarParent->m_Vars[QUAT_QW]->m_Visible != visible )
                     {
-                        mProxy->m_VarParent->m_Vars[4]->m_Visible = visible;
-                        mProxy->m_VarParent->m_Vars[5]->m_Visible = visible;
-                        mProxy->m_VarParent->m_Vars[6]->m_Visible = visible;
-                        mProxy->m_VarParent->m_Vars[7]->m_Visible = visible;
+                        mProxy->m_VarParent->m_Vars[QUAT_QX]->m_Visible = visible;
+                        mProxy->m_VarParent->m_Vars[QUAT_QY]->m_Visible = visible;
+                        mProxy->m_VarParent->m_Vars[QUAT_QZ]->m_Visible = visible;
+                        mProxy->m_VarParent->m_Vars[QUAT_QW]->m_Visible = visible;
                         mProxy->m_Bar->NotUpToDate();
                     }
                 }
             }
         }
-        else if( _ExtMemberIndex>=8 && _ExtMemberIndex<=11 )
+        else if( _ExtMemberIndex>= QUAT_AX && _ExtMemberIndex<= QUAT_ADEG)
             ext->ConvertFromAxisAngle();
-        else if( mProxy && _ExtMemberIndex==12 && mProxy->m_VarParent && !ext->m_IsDir )
+        else if( mProxy && _ExtMemberIndex==QUAT_MODE && mProxy->m_VarParent && !ext->m_IsDir )
         {
-            assert( mProxy->m_VarParent->m_Vars.size()==16 );
+            assert( mProxy->m_VarParent->m_Vars.size()==QUAT_COUNT );
             bool aa = ext->m_AAMode;
-            if(    mProxy->m_VarParent->m_Vars[4]->m_Visible != !aa
-                || mProxy->m_VarParent->m_Vars[5]->m_Visible != !aa
-                || mProxy->m_VarParent->m_Vars[6]->m_Visible != !aa
-                || mProxy->m_VarParent->m_Vars[7]->m_Visible != !aa
-                || mProxy->m_VarParent->m_Vars[8 ]->m_Visible != aa
-                || mProxy->m_VarParent->m_Vars[9 ]->m_Visible != aa
-                || mProxy->m_VarParent->m_Vars[10]->m_Visible != aa
-                || mProxy->m_VarParent->m_Vars[11]->m_Visible != aa )
+            if(    mProxy->m_VarParent->m_Vars[QUAT_QX]->m_Visible != !aa
+                || mProxy->m_VarParent->m_Vars[QUAT_QY]->m_Visible != !aa
+                || mProxy->m_VarParent->m_Vars[QUAT_QZ]->m_Visible != !aa
+                || mProxy->m_VarParent->m_Vars[QUAT_QW]->m_Visible != !aa
+                || mProxy->m_VarParent->m_Vars[QUAT_AX]->m_Visible != aa
+                || mProxy->m_VarParent->m_Vars[QUAT_AY]->m_Visible != aa
+                || mProxy->m_VarParent->m_Vars[QUAT_AZ]->m_Visible != aa
+                || mProxy->m_VarParent->m_Vars[QUAT_ADEG]->m_Visible != aa )
             {
-                mProxy->m_VarParent->m_Vars[4]->m_Visible = !aa;
-                mProxy->m_VarParent->m_Vars[5]->m_Visible = !aa;
-                mProxy->m_VarParent->m_Vars[6]->m_Visible = !aa;
-                mProxy->m_VarParent->m_Vars[7]->m_Visible = !aa;
-                mProxy->m_VarParent->m_Vars[8 ]->m_Visible = aa;
-                mProxy->m_VarParent->m_Vars[9 ]->m_Visible = aa;
-                mProxy->m_VarParent->m_Vars[10]->m_Visible = aa;
-                mProxy->m_VarParent->m_Vars[11]->m_Visible = aa;
+                mProxy->m_VarParent->m_Vars[QUAT_QX]->m_Visible = !aa;
+                mProxy->m_VarParent->m_Vars[QUAT_QY]->m_Visible = !aa;
+                mProxy->m_VarParent->m_Vars[QUAT_QZ]->m_Visible = !aa;
+                mProxy->m_VarParent->m_Vars[QUAT_QW]->m_Visible = !aa;
+                mProxy->m_VarParent->m_Vars[QUAT_AX]->m_Visible = aa;
+                mProxy->m_VarParent->m_Vars[QUAT_AY]->m_Visible = aa;
+                mProxy->m_VarParent->m_Vars[QUAT_AZ]->m_Visible = aa;
+                mProxy->m_VarParent->m_Vars[QUAT_ADEG]->m_Visible = aa;
                 mProxy->m_Bar->NotUpToDate();
             }
-            if( static_cast<CTwVarAtom *>(mProxy->m_VarParent->m_Vars[12])->m_ReadOnly )
+            if( static_cast<CTwVarAtom *>(mProxy->m_VarParent->m_Vars[QUAT_MODE])->m_ReadOnly )
             {
-                static_cast<CTwVarAtom *>(mProxy->m_VarParent->m_Vars[12])->m_ReadOnly = false;
+                static_cast<CTwVarAtom *>(mProxy->m_VarParent->m_Vars[QUAT_MODE])->m_ReadOnly = false;
                 mProxy->m_Bar->NotUpToDate();
             }
         }
@@ -628,62 +646,62 @@ void ANT_CALL CQuaternionExt::CopyVarToExtCB(const void *_VarValue, void *_ExtVa
     (void)mProxy;
     if( _VarValue && ext )
     {
-        if( mProxy && _ExtMemberIndex==12 && mProxy->m_VarParent && !ext->m_IsDir )
+        if( mProxy && _ExtMemberIndex== QUAT_MODE && mProxy->m_VarParent && !ext->m_IsDir )
         {
-            assert( mProxy->m_VarParent->m_Vars.size()==16 );
+            assert( mProxy->m_VarParent->m_Vars.size()==QUAT_COUNT);
             bool aa = ext->m_AAMode;
-            if(    mProxy->m_VarParent->m_Vars[4]->m_Visible != !aa
-                || mProxy->m_VarParent->m_Vars[5]->m_Visible != !aa
-                || mProxy->m_VarParent->m_Vars[6]->m_Visible != !aa
-                || mProxy->m_VarParent->m_Vars[7]->m_Visible != !aa
-                || mProxy->m_VarParent->m_Vars[8 ]->m_Visible != aa
-                || mProxy->m_VarParent->m_Vars[9 ]->m_Visible != aa
-                || mProxy->m_VarParent->m_Vars[10]->m_Visible != aa
-                || mProxy->m_VarParent->m_Vars[11]->m_Visible != aa )
+            if(    mProxy->m_VarParent->m_Vars[QUAT_QX]->m_Visible != !aa
+                || mProxy->m_VarParent->m_Vars[QUAT_QY]->m_Visible != !aa
+                || mProxy->m_VarParent->m_Vars[QUAT_QZ]->m_Visible != !aa
+                || mProxy->m_VarParent->m_Vars[QUAT_QW]->m_Visible != !aa
+                || mProxy->m_VarParent->m_Vars[QUAT_AX]->m_Visible != aa
+                || mProxy->m_VarParent->m_Vars[QUAT_AY]->m_Visible != aa
+                || mProxy->m_VarParent->m_Vars[QUAT_AZ]->m_Visible != aa
+                || mProxy->m_VarParent->m_Vars[QUAT_ADEG]->m_Visible != aa )
             {
-                mProxy->m_VarParent->m_Vars[4]->m_Visible = !aa;
-                mProxy->m_VarParent->m_Vars[5]->m_Visible = !aa;
-                mProxy->m_VarParent->m_Vars[6]->m_Visible = !aa;
-                mProxy->m_VarParent->m_Vars[7]->m_Visible = !aa;
-                mProxy->m_VarParent->m_Vars[8 ]->m_Visible = aa;
-                mProxy->m_VarParent->m_Vars[9 ]->m_Visible = aa;
-                mProxy->m_VarParent->m_Vars[10]->m_Visible = aa;
-                mProxy->m_VarParent->m_Vars[11]->m_Visible = aa;
+                mProxy->m_VarParent->m_Vars[QUAT_QX]->m_Visible = !aa;
+                mProxy->m_VarParent->m_Vars[QUAT_QY]->m_Visible = !aa;
+                mProxy->m_VarParent->m_Vars[QUAT_QZ]->m_Visible = !aa;
+                mProxy->m_VarParent->m_Vars[QUAT_QW]->m_Visible = !aa;
+                mProxy->m_VarParent->m_Vars[QUAT_AX]->m_Visible = aa;
+                mProxy->m_VarParent->m_Vars[QUAT_AY]->m_Visible = aa;
+                mProxy->m_VarParent->m_Vars[QUAT_AZ]->m_Visible = aa;
+                mProxy->m_VarParent->m_Vars[QUAT_ADEG]->m_Visible = aa;
                 mProxy->m_Bar->NotUpToDate();
             }
-            if( static_cast<CTwVarAtom *>(mProxy->m_VarParent->m_Vars[12])->m_ReadOnly )
+            if( static_cast<CTwVarAtom *>(mProxy->m_VarParent->m_Vars[QUAT_MODE])->m_ReadOnly )
             {
-                static_cast<CTwVarAtom *>(mProxy->m_VarParent->m_Vars[12])->m_ReadOnly = false;
+                static_cast<CTwVarAtom *>(mProxy->m_VarParent->m_Vars[QUAT_MODE])->m_ReadOnly = false;
                 mProxy->m_Bar->NotUpToDate();
             }
         }
-        else if( mProxy && _ExtMemberIndex==4 && mProxy->m_VarParent )
+        else if( mProxy && _ExtMemberIndex==QUAT_QX && mProxy->m_VarParent )
         {
-            assert( mProxy->m_VarParent->m_Vars.size()==16 );
+            assert( mProxy->m_VarParent->m_Vars.size()==QUAT_COUNT);
             bool visible = ext->m_ShowVal;
             if( ext->m_IsDir )
             {
-                if(    mProxy->m_VarParent->m_Vars[13]->m_Visible != visible
-                    || mProxy->m_VarParent->m_Vars[14]->m_Visible != visible
-                    || mProxy->m_VarParent->m_Vars[15]->m_Visible != visible )
+                if(    mProxy->m_VarParent->m_Vars[QUAT_DX]->m_Visible != visible
+                    || mProxy->m_VarParent->m_Vars[QUAT_DY]->m_Visible != visible
+                    || mProxy->m_VarParent->m_Vars[QUAT_DZ]->m_Visible != visible )
                 {
-                    mProxy->m_VarParent->m_Vars[13]->m_Visible = visible;
-                    mProxy->m_VarParent->m_Vars[14]->m_Visible = visible;
-                    mProxy->m_VarParent->m_Vars[15]->m_Visible = visible;
+                    mProxy->m_VarParent->m_Vars[QUAT_DX]->m_Visible = visible;
+                    mProxy->m_VarParent->m_Vars[QUAT_DY]->m_Visible = visible;
+                    mProxy->m_VarParent->m_Vars[QUAT_DZ]->m_Visible = visible;
                     mProxy->m_Bar->NotUpToDate();
                 }
             }
             else
             {
-                if(    mProxy->m_VarParent->m_Vars[4]->m_Visible != visible
-                    || mProxy->m_VarParent->m_Vars[5]->m_Visible != visible
-                    || mProxy->m_VarParent->m_Vars[6]->m_Visible != visible
-                    || mProxy->m_VarParent->m_Vars[7]->m_Visible != visible )
+                if(    mProxy->m_VarParent->m_Vars[QUAT_QX]->m_Visible != visible
+                    || mProxy->m_VarParent->m_Vars[QUAT_QY]->m_Visible != visible
+                    || mProxy->m_VarParent->m_Vars[QUAT_QZ]->m_Visible != visible
+                    || mProxy->m_VarParent->m_Vars[QUAT_QW]->m_Visible != visible )
                 {
-                    mProxy->m_VarParent->m_Vars[4]->m_Visible = visible;
-                    mProxy->m_VarParent->m_Vars[5]->m_Visible = visible;
-                    mProxy->m_VarParent->m_Vars[6]->m_Visible = visible;
-                    mProxy->m_VarParent->m_Vars[7]->m_Visible = visible;
+                    mProxy->m_VarParent->m_Vars[QUAT_QX]->m_Visible = visible;
+                    mProxy->m_VarParent->m_Vars[QUAT_QY]->m_Visible = visible;
+                    mProxy->m_VarParent->m_Vars[QUAT_QZ]->m_Visible = visible;
+                    mProxy->m_VarParent->m_Vars[QUAT_QW]->m_Visible = visible;
                     mProxy->m_Bar->NotUpToDate();
                 }
             }
@@ -782,10 +800,22 @@ void CQuaternionExt::CreateTypes()
         const char *quatSDef = (pass==0) ? quatSDefPass0 : quatSDefPass1;
         const char *dirDef = (pass==0) ? dirDefPass0 : dirDefPass1;
 
-        TwStructMember QuatExtMembers[] = { { "0", s_CustomType, 0, "" },
-                                            { "1", s_CustomType, 0, "" },
-                                            { "2", s_CustomType, 0, "" }, 
-                                            { "3", s_CustomType, 0, "" }, 
+        TwStructMember QuatExtMembers[] = { { "0",  s_CustomType, 0, "" }, // The model is drawn on top of these, by default 4 will be visible use "rows=X" to change that
+                                            { "1",  s_CustomType, 0, "" },
+                                            { "2",  s_CustomType, 0, "" }, 
+                                            { "3",  s_CustomType, 0, "" }, 
+                                            { "4",  s_CustomType, 0, "" },
+                                            { "5",  s_CustomType, 0, "" },
+                                            { "6",  s_CustomType, 0, "" },
+                                            { "7",  s_CustomType, 0, "" },
+                                            { "8",  s_CustomType, 0, "" },
+                                            { "9",  s_CustomType, 0, "" },
+                                            { "10", s_CustomType, 0, "" },
+                                            { "11", s_CustomType, 0, "" },
+                                            { "12", s_CustomType, 0, "" },
+                                            { "13", s_CustomType, 0, "" },
+                                            { "14", s_CustomType, 0, "" },
+                                            { "15", s_CustomType, 0, "" },
                                             { "Quat X", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qx), quatDef }, // copy of the source quaternion
                                             { "Quat Y", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qy), quatDef },
                                             { "Quat Z", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Qz), quatDef },
@@ -798,6 +828,8 @@ void CQuaternionExt::CreateTypes()
                                             { "Dir X", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dx), dirDef },      // copy of the source direction
                                             { "Dir Y", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dy), dirDef },
                                             { "Dir Z", TW_TYPE_DOUBLE, offsetof(CQuaternionExt, Dz), dirDef } };
+
+        static_assert(QUAT_COUNT == sizeof(QuatExtMembers) / sizeof(QuatExtMembers[0]),"QuaternionExt: Var array and enum is out of sync");
         if( pass==0 ) 
         {
             g_TwMgr->m_TypeQuat4F = TwDefineStructExt("QUAT4F", QuatExtMembers, sizeof(QuatExtMembers)/sizeof(QuatExtMembers[0]), 4*sizeof(float), sizeof(CQuaternionExt), CQuaternionExt::InitQuat4FCB, CQuaternionExt::CopyVarFromExtCB, CQuaternionExt::CopyVarToExtCB, CQuaternionExt::SummaryCB, CTwMgr::CStruct::s_PassProxyAsClientData, "A 4-floats-encoded quaternion");
@@ -1266,37 +1298,37 @@ void CQuaternionExt::DrawCB(int w, int h, void *_ExtValue, void *_ClientData, Tw
     (void)_ClientData; (void)_Bar;
 
     // show/hide quat values
-    assert( varGrp->m_Vars.size()==16 );
+    assert( varGrp->m_Vars.size()== QUAT_COUNT);
     bool visible = ext->m_ShowVal;
     if( ext->m_IsDir )
     {
-        if(    varGrp->m_Vars[13]->m_Visible != visible
-            || varGrp->m_Vars[14]->m_Visible != visible
-            || varGrp->m_Vars[15]->m_Visible != visible )
+        if(    varGrp->m_Vars[QUAT_DX]->m_Visible != visible
+            || varGrp->m_Vars[QUAT_DY]->m_Visible != visible
+            || varGrp->m_Vars[QUAT_DZ]->m_Visible != visible )
         {
-            varGrp->m_Vars[13]->m_Visible = visible;
-            varGrp->m_Vars[14]->m_Visible = visible;
-            varGrp->m_Vars[15]->m_Visible = visible;
+            varGrp->m_Vars[QUAT_DX]->m_Visible = visible;
+            varGrp->m_Vars[QUAT_DY]->m_Visible = visible;
+            varGrp->m_Vars[QUAT_DZ]->m_Visible = visible;
             _Bar->NotUpToDate();
         }
     }
     else
     {
-        if(    varGrp->m_Vars[4]->m_Visible != visible
-            || varGrp->m_Vars[5]->m_Visible != visible
-            || varGrp->m_Vars[6]->m_Visible != visible
-            || varGrp->m_Vars[7]->m_Visible != visible )
+        if(    varGrp->m_Vars[QUAT_QX]->m_Visible != visible
+            || varGrp->m_Vars[QUAT_QY]->m_Visible != visible
+            || varGrp->m_Vars[QUAT_QZ]->m_Visible != visible
+            || varGrp->m_Vars[QUAT_QW]->m_Visible != visible )
         {
-            varGrp->m_Vars[4]->m_Visible = visible;
-            varGrp->m_Vars[5]->m_Visible = visible;
-            varGrp->m_Vars[6]->m_Visible = visible;
-            varGrp->m_Vars[7]->m_Visible = visible;
+            varGrp->m_Vars[QUAT_QX]->m_Visible = visible;
+            varGrp->m_Vars[QUAT_QY]->m_Visible = visible;
+            varGrp->m_Vars[QUAT_QZ]->m_Visible = visible;
+            varGrp->m_Vars[QUAT_QW]->m_Visible = visible;
             _Bar->NotUpToDate();
         }
     }
 
     // force ext update
-    static_cast<CTwVarAtom *>(varGrp->m_Vars[4])->ValueToDouble();
+    static_cast<CTwVarAtom *>(varGrp->m_Vars[QUAT_QX])->ValueToDouble();
 
     assert( s_SphTri.size()>0 );
     assert( s_SphTri.size()==3*s_SphCol.size() );
@@ -1785,18 +1817,18 @@ static int TwCreateGraph(ETwGraphAPI _GraphAPI)
             }
         #endif // ANT_WINDOWS
         break;
-	case TW_DIRECT3D12:
+    case TW_DIRECT3D12:
 #ifdef ANT_WINDOWS
-		if (g_TwMgr->m_Device != NULL)
-			g_TwMgr->m_Graph = new CTwGraphDirect3D12;
-		else
-		{
-			g_TwMgr->SetLastError(g_ErrBadDevice);
-			return 0;
-		}
+        if (g_TwMgr->m_Device != NULL)
+            g_TwMgr->m_Graph = new CTwGraphDirect3D12;
+        else
+        {
+            g_TwMgr->SetLastError(g_ErrBadDevice);
+            return 0;
+        }
 #endif // ANT_WINDOWS
-		break;
-	}
+        break;
+    }
 
     if( g_TwMgr->m_Graph==NULL )
     {
@@ -2071,15 +2103,15 @@ int ANT_CALL TwWindowExists(int wndID)
 
 int ANT_CALL TwDrawContext(void *context)
 {
-	if (g_TwMgr == NULL || g_TwMgr->m_Graph == NULL)
-	{
-		TwGlobalError(g_ErrNotInit);
-		return 0; // not initialized
-	}
-	g_TwMgr->m_GraphContext = context;
-	int ret = TwDraw();
-	g_TwMgr->m_GraphContext = NULL;
-	return ret;
+    if (g_TwMgr == NULL || g_TwMgr->m_Graph == NULL)
+    {
+        TwGlobalError(g_ErrNotInit);
+        return 0; // not initialized
+    }
+    g_TwMgr->m_GraphContext = context;
+    int ret = TwDraw();
+    g_TwMgr->m_GraphContext = NULL;
+    return ret;
 }
 //  ---------------------------------------------------------------------------
 
@@ -4090,7 +4122,8 @@ static int AddVar(TwBar *_Bar, const char *_Name, ETwType _Type, void *_VarPtr, 
         g_TwMgr->SetLastError(g_ErrBadParam);
         return 0;
     }
-    if( _Bar->Find(_Name)!=NULL )
+
+	if( _Bar->Find(_Name)!=NULL )
     {
         g_TwMgr->SetLastError(g_ErrExist);
         return 0;
@@ -4348,8 +4381,12 @@ static int AddVar(TwBar *_Bar, const char *_Name, ETwType _Type, void *_VarPtr, 
                     sProxy->m_CustomIndexLast = i;
             }
         }
-        char structInfo[64];
+        char structInfo[1024*4];
         sprintf(structInfo, "typeid=%d valptr=%p close ", _Type, vPtr);
+        if (_Type == g_TwMgr->m_TypeQuat4F || _Type == g_TwMgr->m_TypeQuat4D || _Type == g_TwMgr->m_TypeDir3F || _Type == g_TwMgr->m_TypeDir3D)
+        {
+            strcat(structInfo, "rows=4 ");
+        }
         string grpDef = '`' + _Bar->m_Name + "`/`" + _Name + "` " + structInfo;
         if( _Def!=NULL && strlen(_Def)>0 )
             grpDef += _Def;
