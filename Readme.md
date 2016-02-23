@@ -4,19 +4,27 @@ Needs Visual studio 2015 and the Direct3D sdk that comes with it.
 
 There are currently no binaries, you need to compile it yourself.
 
-Resources are not released at program extit but it works. Any fixes are welcome.
-
 Init like this.
-`TwInit( TW_DIRECT3D12, device )`, device should be a `ID3D12Device *`.
+```C
+// pDevice should be a ID3D12Device *
+TwInit( TW_DIRECT3D12, pDevice );
+````
 
-Draw like this. `TwDrawContext( graphicsCommandList )`, the argument should be a open `ID3D12GraphicsCommandList *`, close it and execute after the call.
+Draw like this.
+```C
+// pGraphicsCommandList`should be a open ID3D12GraphicsCommandList *, close it and execute after the call.
+TwDrawContext( pGraphicsCommandList );
+```
 
 There is also a minor D3D12 unrelated change to set the height of quaternion, normals and axis angle widgets. 
 Use like this, `TwAddVarRW(twBar, "Camera", TW_TYPE_QUAT4F, &twRotation, "opened=true rows=8");` 
 rows is the height of the widget as the height in text rows. 
 If the font is 10 pixels high, the height of the widget would be 80. Max is 16 rows.
 
-If you find bugs open issues please, or better yet, send pull requests with fixes.
+If you find bugs open issues, or better yet, send pull requests with fixes.
+
+Known issue:
+ #1 Resources are not released when TwTerminate is called.
 
 ### Original Readme.txt from AntTweakBar development library follows
 
