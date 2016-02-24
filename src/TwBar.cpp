@@ -2931,7 +2931,7 @@ const CTwVar *CTwVarGroup::Find(const char *_Name, CTwVarGroup **_Parent, int *_
     else
     {
         const CTwVar *v;
-        for( size_t i=0; i<m_Vars.size(); ++ i )
+        for( size_t i= m_Vars.size(); i-- != 0; )
             if( m_Vars[i]!=NULL )
             {
                 v = m_Vars[i]->Find(_Name, _Parent, _Index);
